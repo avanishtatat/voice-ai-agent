@@ -1,15 +1,15 @@
 from datetime import date, time, timedelta
 
-from app.config.database import get_db
+from app.config.database import SessionLocal
 from app.models.patient import Patient
 from app.models.doctor import Doctor
 from app.models.doctor_schedule import DoctorSchedule
 
 def seed_database():
-    db = next(get_db()) # Obtains a database session from the get_db generator function, allowing us to interact with the database for seeding data.
+    db = SessionLocal() # Obtains a database session from the SessionLocal class, allowing us to interact with the database for seeding data.
     try:
         # Prevent duplicate seeding
-        if db.query(Doctor).first():
+        if db.query(Doctor).first() or db.query(Patient).first():
             print("Data already seeded.")
         else:
         # Patients
@@ -25,13 +25,9 @@ def seed_database():
             doctor3 = Doctor(name="Dr Kumar", specialty="Orthopedic")
 
             db.add_all([doctor1, doctor2, doctor3])
-            try: 
-                db.commit()
-            except Exception as e:
-                db.rollback()
-                raise e
+            db.flush()
 
-            # Important: IDs available after commit
+            # Important: IDs are generated after flush, so we can use them for schedules
             tomorrow = date.today() + timedelta(days=1)
 
             schedules = [
@@ -54,6 +50,6 @@ def seed_database():
     finally:
         db.close()
 
-# The seed_database function is designed to populate the database with initial data for patients, doctors, and doctor schedules. It first checks if any doctors already exist in the database to prevent duplicate seeding. If not, it creates sample patients and doctors, commits them to the database to ensure IDs are generated, and then creates doctor schedules for the next day. Each step includes error handling to rollback transactions in case of any issues during database operations.
 if __name__ == "__main__":
+    """Run this script to seed the database with initial data for patients, doctors, and doctor schedules."""
     seed_database()
