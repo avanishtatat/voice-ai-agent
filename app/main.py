@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from contextlib import asyncccontextmanager
+from contextlib import asynccontextmanager
 from app.routes.appointments import router as appointments_router
 from app.routes.health import router as health_router 
 from app.config.database import engine, Base 
@@ -9,7 +9,7 @@ from app.models.patient import Patient
 from app.models.appointment import Appointment
 from app.models.doctor_schedule import DoctorSchedule
 
-@asyncccontextmanager
+@asynccontextmanager
 async def lifespan(app: FastAPI):
     # Perform any startup tasks here (e.g., database connection, loading models)
     print("Starting up the Voice AI Agent...")

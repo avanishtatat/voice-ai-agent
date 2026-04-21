@@ -16,7 +16,7 @@ class Appointment(Base):
     id = Column(Integer, primary_key=True, index=True) 
     patient_id = Column(Integer, ForeignKey("patients.id", ondelete="CASCADE"), nullable=False, index=True)
     doctor_id = Column(Integer, ForeignKey("doctors.id", ondelete="CASCADE"), nullable=False, index=True)
-    date = Column(Date, nullable=False)
+    date = Column(Date, nullable=False, index=True)
     time = Column(Time, nullable=False)
     status = Column(Enum(AppointmentStatus), default=AppointmentStatus.booked, nullable=False)
 
