@@ -8,5 +8,6 @@ class Patient(Base):
     id = Column(Integer, primary_key=True, index=True) 
     name = Column(String, nullable=False) 
     preferred_language = Column(String, default="en", nullable=False)
+    phone = Column(String, unique=True, nullable=False)
     
     appointments = relationship("Appointment", back_populates="patient") # Establishes a relationship with the Appointment model, allowing access to a patient's appointments.

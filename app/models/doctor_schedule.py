@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, Date, Time, Boolean, ForeignKey, UniqueConstraint, Index
+from sqlalchemy.orm import relationship
 from app.config.database import Base
 
 class DoctorSchedule(Base):
@@ -11,3 +12,5 @@ class DoctorSchedule(Base):
     date = Column(Date, nullable=False)
     time = Column(Time, nullable=False)
     is_available = Column(Boolean, default=True, nullable=False)
+
+    doctor = relationship("Doctor", back_populates="schedules") # Establishes a relationship with the Doctor model, allowing access to the doctor associated with a schedule.   

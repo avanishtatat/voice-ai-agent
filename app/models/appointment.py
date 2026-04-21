@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, Date, Time, ForeignKey, UniqueConstraint, Enum 
+from sqlalchemy import Column, Integer, Date, Time, ForeignKey, UniqueConstraint, Enum
+from sqlalchemy.orm import relationship
 from app.config.database import Base 
 import enum 
 
@@ -18,3 +19,6 @@ class Appointment(Base):
     date = Column(Date, nullable=False)
     time = Column(Time, nullable=False)
     status = Column(Enum(AppointmentStatus), default=AppointmentStatus.booked, nullable=False)
+
+    patient = relationship("Patient", back_populates="appointments")
+    doctor = relationship("Doctor", back_populates="appointments")
