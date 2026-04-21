@@ -4,6 +4,7 @@ from app.config.database import SessionLocal
 from app.models.patient import Patient
 from app.models.doctor import Doctor
 from app.models.doctor_schedule import DoctorSchedule
+from app.models.appointment import Appointment
 
 def seed_database():
     db = SessionLocal() # Obtains a database session from the SessionLocal class, allowing us to interact with the database for seeding data.
