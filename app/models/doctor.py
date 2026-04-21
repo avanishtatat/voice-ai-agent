@@ -9,5 +9,5 @@ class Doctor(Base):
     name = Column(String, nullable=False) 
     specialty = Column(String, nullable=False)
 
-    appointments = relationship("Appointment", back_populates="doctor") # Establishes a relationship with the Appointment model, allowing access to a doctor's appointments.
-    schedules = relationship("DoctorSchedule", back_populates="doctor") # Establishes a relationship with the DoctorSchedule model, allowing access to a doctor's schedules.
+    appointments = relationship("Appointment", back_populates="doctor", cascade="all, delete-orphan") # Establishes a relationship with the Appointment model, allowing access to a doctor's appointments.
+    schedules = relationship("DoctorSchedule", back_populates="doctor", cascade="all, delete-orphan") # Establishes a relationship with the DoctorSchedule model, allowing access to a doctor's schedules.

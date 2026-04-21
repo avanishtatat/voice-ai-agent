@@ -8,7 +8,7 @@ class DoctorSchedule(Base):
                       Index('idx_doctor_schedule', 'doctor_id', 'date', 'time'))
 
     id = Column(Integer, primary_key=True, index=True)
-    doctor_id = Column(Integer, ForeignKey("doctors.id"), nullable=False) 
+    doctor_id = Column(Integer, ForeignKey("doctors.id", ondelete="CASCADE"), nullable=False) 
     date = Column(Date, nullable=False)
     time = Column(Time, nullable=False)
     is_available = Column(Boolean, default=True, nullable=False)
