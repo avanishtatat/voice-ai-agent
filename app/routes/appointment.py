@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.config.database import get_db 
-from app.schemas.appointment import AppointmentCreate, AppointmentCancel, AvailableSlotResponse, AppointmentReschedule
+from app.schemas.appointment import AppointmentCreate, AppointmentCancel, AvailableSlotsResponse, AppointmentReschedule
 
 from app.services.appointment_service import book_appointment_service, cancel_appointment_service, get_available_slots_service, reschedule_appointment_service
 
@@ -28,10 +28,10 @@ def cancel_appointment(payload: AppointmentCancel, db: Session = Depends(get_db)
     return {"success": True, "message": "Appointment cancelled successfully", "appointment_id": appointment.id}
 
 # Endpoint to get available slots for a doctor on a specific date
-@router.get("/available-slots", response_model=list[AvailableSlotResponse])
+@router.get("/available-slots", response_model=AvailableSlotsResponse)
 def get_available_slots(doctor_id: int, date: date_type, db: Session = Depends(get_db)):
     slots = get_available_slots_service(doctor_id, date, db)
-    return { "success": True, "available_slots": slots }
+    return {"success": True, "available_slots": slots}
 
 # Endpoint to reschedule an appointment
 @router.post("/reschedule", status_code=200)

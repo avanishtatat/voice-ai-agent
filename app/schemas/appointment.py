@@ -13,6 +13,10 @@ class AppointmentCancel(BaseModel):
 class AvailableSlotResponse(BaseModel):
     time: time
 
+class AvailableSlotsResponse(BaseModel):
+    success: bool
+    available_slots: list[AvailableSlotResponse]
+
 class AppointmentReschedule(BaseModel):
     appointment_id: int 
     new_doctor_id: int
