@@ -29,14 +29,27 @@ def seed_database():
             db.flush()
 
             # Important: IDs are generated after flush, so we can use them for schedules
-            tomorrow = date.today() + timedelta(days=1)
+            day1 = date.today() + timedelta(days=7)   # 1 week from now
+            day2 = date.today() + timedelta(days=14)  # 2 weeks from now
+            day3 = date.today() + timedelta(days=21)  # 3 weeks from now
 
             schedules = [
-                DoctorSchedule(doctor_id=doctor1.id, date=tomorrow, time=time(10, 0)),
-                DoctorSchedule(doctor_id=doctor1.id, date=tomorrow, time=time(11, 0)),
-                DoctorSchedule(doctor_id=doctor2.id, date=tomorrow, time=time(14, 0)),
-                DoctorSchedule(doctor_id=doctor2.id, date=tomorrow, time=time(15, 0)),
-                DoctorSchedule(doctor_id=doctor3.id, date=tomorrow, time=time(16, 0)),
+                # Dr Sharma – Cardiologist
+                DoctorSchedule(doctor_id=doctor1.id, date=day1, time=time(9, 0)),
+                DoctorSchedule(doctor_id=doctor1.id, date=day1, time=time(10, 0)),
+                DoctorSchedule(doctor_id=doctor1.id, date=day1, time=time(11, 0)),
+                DoctorSchedule(doctor_id=doctor1.id, date=day2, time=time(9, 0)),
+                DoctorSchedule(doctor_id=doctor1.id, date=day2, time=time(10, 0)),
+                # Dr Meena – Dermatologist
+                DoctorSchedule(doctor_id=doctor2.id, date=day1, time=time(13, 0)),
+                DoctorSchedule(doctor_id=doctor2.id, date=day1, time=time(14, 0)),
+                DoctorSchedule(doctor_id=doctor2.id, date=day2, time=time(13, 0)),
+                DoctorSchedule(doctor_id=doctor2.id, date=day2, time=time(15, 0)),
+                # Dr Kumar – Orthopedic
+                DoctorSchedule(doctor_id=doctor3.id, date=day2, time=time(11, 0)),
+                DoctorSchedule(doctor_id=doctor3.id, date=day2, time=time(16, 0)),
+                DoctorSchedule(doctor_id=doctor3.id, date=day3, time=time(10, 0)),
+                DoctorSchedule(doctor_id=doctor3.id, date=day3, time=time(11, 0)),
             ]
 
             db.add_all(schedules)
