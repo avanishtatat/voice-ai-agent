@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Date, Time, ForeignKey, UniqueConstraint, Enum
+from sqlalchemy import Column, Integer, Date, Time, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 from app.config.database import Base 
 import enum 
@@ -11,7 +11,6 @@ class AppointmentStatus(enum.Enum):
 
 class Appointment(Base): 
     __tablename__ = "appointments" 
-    __table_args__ = (UniqueConstraint('doctor_id', 'date', 'time', name='unique_doctor_appointment'),)
 
     id = Column(Integer, primary_key=True, index=True) 
     patient_id = Column(Integer, ForeignKey("patients.id", ondelete="CASCADE"), nullable=False, index=True)

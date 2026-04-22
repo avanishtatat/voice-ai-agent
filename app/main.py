@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from app.routes.appointments import router as appointments_router
+from app.routes.appointment import router as appointments_router
 from app.routes.health import router as health_router 
 from app.config.database import engine, Base 
 
