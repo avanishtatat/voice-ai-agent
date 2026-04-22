@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date as date_type
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -42,7 +42,7 @@ def book_appointment(payload: AppointmentCreate, db: Session = Depends(get_db)):
         DoctorSchedule.doctor_id == payload.doctor_id,
         DoctorSchedule.date == payload.date,
         DoctorSchedule.time == payload.time 
-    ).first()
+    ).with_for_update().first()
 
     if not slot: 
         raise HTTPException(status_code=404, detail="Slot does not exist for the doctor at the specified date and time")
@@ -50,12 +50,12 @@ def book_appointment(payload: AppointmentCreate, db: Session = Depends(get_db)):
     if not slot.is_available: 
         raise HTTPException(status_code=400, detail="Slot is already booked")
     
-    # 5. Check if there's an existing appointment for the same doctor, date, and time that is still active (booked or rescheduled)
+    # 5. Check if there's an existing appointment for the same doctor, date, and time that is still active
     existing = db.query(Appointment).filter(
         Appointment.doctor_id == payload.doctor_id,
         Appointment.date == payload.date,
         Appointment.time == payload.time,
-        Appointment.status.in_([AppointmentStatus.booked, AppointmentStatus.rescheduled])
+        Appointment.status == AppointmentStatus.booked
     ).first()
 
     if existing: 
@@ -122,7 +122,7 @@ def cancel_appointment(payload: AppointmentCancel, db: Session = Depends(get_db)
 
 # Endpoint to get available slots for a doctor on a specific date
 @router.get("/available-slots", response_model=list[AvailableSlotResponse])
-def get_available_slots(doctor_id: int, date: date, db: Session = Depends(get_db)):
+def get_available_slots(doctor_id: int, date: date_type, db: Session = Depends(get_db)):
     # 1. Validate doctor 
     doctor = db.query(Doctor).filter(Doctor.id == doctor_id).first()
     if not doctor: 
@@ -166,7 +166,7 @@ def reschedule_appointment(payload: AppointmentReschedule, db: Session = Depends
         DoctorSchedule.doctor_id == payload.new_doctor_id,
         DoctorSchedule.date == payload.new_date,
         DoctorSchedule.time == payload.new_time 
-    ).first()
+    ).with_for_update().first()
 
     # 7. Check if slot exists and is available
     if not slot: 
